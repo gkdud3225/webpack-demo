@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
     mode: 'none',
-    entry: './src/index.js',
+    entry: ['babel-polyfill', './src/index.js'],
     output: {
         filename: 'webpack-demo.js',
         path: path.resolve(__dirname, 'dist')
@@ -10,15 +10,20 @@ module.exports = {
     module: {
         rules: [{
             test: /\.js$/,
+            exclude: /node_modules/,
             use: {
                 loader: 'babel-loader',
                 options: {
-                    presets: ['babel-preset-env']
+                    presets: [
+                      ['@babel/env', {
+                        targets: {
+                          browsers: ['ie >= 8']
+                        }
+                      }]
+                    ]
                   }
-                
             }
         }]
-        
     },
     optimization: {
         minimize: true
