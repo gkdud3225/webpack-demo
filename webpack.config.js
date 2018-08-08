@@ -1,5 +1,6 @@
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const es3ifyPlugin = require('es3ify-webpack-plugin');
 
 module.exports = {
     mode: 'none',
@@ -19,19 +20,22 @@ module.exports = {
                       ['@babel/env', {
                         targets: {
                           browsers: ['ie >= 8']
-                        }
+                        },
+                        loose: true
                       }]
                     ]
-                  }
+                }
             }
         }]
     },
+    plugins: [
+        new es3ifyPlugin() // IE8과의 호환성을 위해 한번더 트랜스파일링
+    ],
     optimization: {
         minimize: true,
         minimizer: [
             new UglifyJsPlugin({
                 uglifyOptions: {
-                    compress: true,
                     ie8: true
                 }
                 
